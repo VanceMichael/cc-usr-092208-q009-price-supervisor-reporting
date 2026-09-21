@@ -8,7 +8,12 @@
     "sample_id",
     "actors",
     "facts",
-    "constraints"
+    "constraints",
+    "clue_record",
+    "lifecycle_events",
+    "identity_protection",
+    "handling_rules",
+    "oversight"
   ],
   "properties": {
     "domain": {
@@ -17,7 +22,7 @@
     },
     "version": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 2
     },
     "sample_id": {
       "type": "string",
@@ -43,6 +48,216 @@
       "items": {
         "type": "string"
       }
+    },
+    "clue_record": {
+      "type": "object",
+      "required": [
+        "report_id",
+        "content_summary",
+        "attachment_fingerprints",
+        "involved_subjects",
+        "product_scope",
+        "urgency",
+        "status"
+      ],
+      "properties": {
+        "report_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attachment_fingerprints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "label",
+              "algorithm",
+              "value"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1
+              },
+              "algorithm": {
+                "enum": [
+                  "sha256",
+                  "sha512"
+                ]
+              },
+              "value": {
+                "type": "string",
+                "minLength": 32
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "involved_subjects": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "product_scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "urgency": {
+          "enum": [
+            "一般",
+            "紧急",
+            "特急"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "lifecycle_events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "seq",
+          "type",
+          "actor_role",
+          "reason",
+          "at"
+        ],
+        "properties": {
+          "seq": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "type": {
+            "enum": [
+              "受理",
+              "查阅",
+              "身份揭示",
+              "管辖移送",
+              "转交",
+              "退回",
+              "补证请求",
+              "补证接收",
+              "并案",
+              "撤回登记",
+              "回避改派",
+              "办结反馈"
+            ]
+          },
+          "actor_role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "identity_protection": {
+      "type": "object",
+      "required": [
+        "pseudonym",
+        "disclosure_scope",
+        "anonymous_channel"
+      ],
+      "properties": {
+        "pseudonym": {
+          "type": "string",
+          "minLength": 1
+        },
+        "disclosure_scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "anonymous_channel": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "handling_rules": {
+      "type": "object",
+      "required": [
+        "duplicate_reports",
+        "cross_region",
+        "supervisor_departure",
+        "withdrawal",
+        "conflict_of_interest"
+      ],
+      "properties": {
+        "duplicate_reports": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cross_region": {
+          "type": "string",
+          "minLength": 1
+        },
+        "supervisor_departure": {
+          "type": "string",
+          "minLength": 1
+        },
+        "withdrawal": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conflict_of_interest": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "oversight": {
+      "type": "object",
+      "required": [
+        "overdue_watch",
+        "access_audit",
+        "retaliation_watch",
+        "integrity_check"
+      ],
+      "properties": {
+        "overdue_watch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "access_audit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retaliation_watch": {
+          "type": "string",
+          "minLength": 1
+        },
+        "integrity_check": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false
