@@ -8,7 +8,13 @@
     "sample_id",
     "actors",
     "facts",
-    "constraints"
+    "constraints",
+    "clue_record",
+    "events",
+    "identity_policy",
+    "anonymous_channel",
+    "handling_rules",
+    "oversight"
   ],
   "properties": {
     "domain": {
@@ -17,7 +23,7 @@
     },
     "version": {
       "type": "integer",
-      "minimum": 1
+      "minimum": 2
     },
     "sample_id": {
       "type": "string",
@@ -43,6 +49,248 @@
       "items": {
         "type": "string"
       }
+    },
+    "clue_record": {
+      "type": "object",
+      "required": [
+        "report_id",
+        "channel",
+        "reporter_alias",
+        "content_summary",
+        "attachment_fingerprints",
+        "involved_parties",
+        "product_scope",
+        "urgency",
+        "status"
+      ],
+      "properties": {
+        "report_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "channel": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reporter_alias": {
+          "type": "string",
+          "minLength": 1
+        },
+        "content_summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attachment_fingerprints": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "involved_parties": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "product_scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "urgency": {
+          "enum": [
+            "一般",
+            "紧急",
+            "特急"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "events": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "seq",
+          "type",
+          "actor_role",
+          "reason",
+          "at"
+        ],
+        "properties": {
+          "seq": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "type": {
+            "enum": [
+              "受理",
+              "管辖移送",
+              "补证请求",
+              "补证提交",
+              "查阅",
+              "转交",
+              "退回",
+              "身份揭示",
+              "撤回登记",
+              "回避调整",
+              "结案"
+            ]
+          },
+          "actor_role": {
+            "type": "string",
+            "minLength": 1
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1
+          },
+          "at": {
+            "type": "string",
+            "minLength": 1
+          },
+          "detail": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "identity_policy": {
+      "type": "object",
+      "required": [
+        "default_visibility",
+        "disclosure_conditions",
+        "handler_minimum_fields"
+      ],
+      "properties": {
+        "default_visibility": {
+          "type": "string",
+          "minLength": 1
+        },
+        "disclosure_conditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "handler_minimum_fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "anonymous_channel": {
+      "type": "object",
+      "required": [
+        "access",
+        "visible_to_reporter",
+        "hidden_from_reporter"
+      ],
+      "properties": {
+        "access": {
+          "type": "string",
+          "minLength": 1
+        },
+        "visible_to_reporter": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "hidden_from_reporter": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "handling_rules": {
+      "type": "object",
+      "required": [
+        "重复举报",
+        "跨区域行为",
+        "监督员离职",
+        "材料撤回",
+        "利益冲突"
+      ],
+      "properties": {
+        "重复举报": {
+          "type": "string",
+          "minLength": 1
+        },
+        "跨区域行为": {
+          "type": "string",
+          "minLength": 1
+        },
+        "监督员离职": {
+          "type": "string",
+          "minLength": 1
+        },
+        "材料撤回": {
+          "type": "string",
+          "minLength": 1
+        },
+        "利益冲突": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "oversight": {
+      "type": "object",
+      "required": [
+        "超期发现",
+        "越权访问发现",
+        "打击报复迹象",
+        "身份中立证明"
+      ],
+      "properties": {
+        "超期发现": {
+          "type": "string",
+          "minLength": 1
+        },
+        "越权访问发现": {
+          "type": "string",
+          "minLength": 1
+        },
+        "打击报复迹象": {
+          "type": "string",
+          "minLength": 1
+        },
+        "身份中立证明": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
     }
   },
   "additionalProperties": false
